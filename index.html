@@ -110,7 +110,7 @@
   // Dữ liệu nằm trong Google Sheet; mã bí mật lưu trên máy (#k=... ở link hoặc nhập 1 lần)
   var API = 'https://script.google.com/macros/s/AKfycbz899TVK9U5MiJrXM__GJhmHX_9QiJHe1rdLdJxPkO60Shq_iFS_i_x_S7Tb1dZLXuc/exec';
   var KEY = (location.hash.match(/k=([^&]+)/) || [])[1] || '';
-  try { if (KEY) localStorage.setItem('key', KEY); else KEY = localStorage.getItem('key') || ''; } catch (e) {}
+  try { if (KEY) localStorage.setItem('key-thuong', KEY); else KEY = localStorage.getItem('key-thuong') || ''; } catch (e) {}
   var DATA = null, CATS = ['Phòng ở', 'Ăn uống', 'Xăng xe', 'Mỹ phẩm', 'Phát sinh'];
   var COLORS = { 'Phòng ở':'#1fa59a', 'Ăn uống':'#f28c18', 'Xăng xe':'#5b8def', 'Mỹ phẩm':'#ec5f8a', 'Phát sinh':'#8a8f98', Income:'#2f7de1' };
   var EXTRA = ['#a46bd8', '#d4a017', '#5b8def', '#c2185b', '#43a047'];
@@ -540,7 +540,7 @@
     fetch(API + '?format=json&key=' + encodeURIComponent(KEY))
       .then(function (r) { return r.json(); })
       .then(function (j) {
-        if (!j.ok) { if (j.msg === 'Sai mã bí mật') { KEY = ''; try { localStorage.removeItem('key'); } catch (e) {} } throw new Error(j.msg); }
+        if (!j.ok) { if (j.msg === 'Sai mã bí mật') { KEY = ''; try { localStorage.removeItem('key-thuong'); } catch (e) {} } throw new Error(j.msg); }
         DATA = j.data; CATS = j.cats || CATS; GOALS = j.goals || GOALS; MONTHS = j.months || MONTHS; render();
       })
       .catch(function (e) { if (!DATA) { load.err = 'Không tải được: ' + e.message; render(); } });
@@ -572,7 +572,7 @@
 
   document.addEventListener('click', function (ev) {
     var b = ev.target.closest('button'); if (!b || b.disabled) return;
-    if (b.id === 'k-save') { KEY = $('k-in').value.trim(); try { localStorage.setItem('key', KEY); } catch (e) {} DATA = null; render(); if (KEY) load(); return; }
+    if (b.id === 'k-save') { KEY = $('k-in').value.trim(); try { localStorage.setItem('key-thuong', KEY); } catch (e) {} DATA = null; render(); if (KEY) load(); return; }
     if (b.id === 'retry') { DATA = null; render(); load(); return; }
     if (!DATA) return;
     readForm(); readGoalForm(); readMonthForm();
